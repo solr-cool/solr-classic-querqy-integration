@@ -1,0 +1,6 @@
+{
+    "class": "querqy.solr.rewriter.commonrules.CommonRulesRewriterFactory",
+    "config": {
+        "rules" : "dog =>\nSYNONYM: cat"
+    }
+}

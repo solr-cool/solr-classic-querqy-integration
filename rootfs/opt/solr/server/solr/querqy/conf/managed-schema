@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Solr managed schema - automatically generated - DO NOT EDIT -->
+<schema name="default-config" version="1.6">
+  <uniqueKey>title</uniqueKey>
+  <fieldType name="plong" class="solr.LongPointField" docValues="true"/>
+  <fieldType name="text_general" class="solr.TextField" />
+  <fieldType name="booleans" class="solr.BoolField" />
+  <fieldType name="pdates" class="solr.DatePointField"/>
+  <fieldType name="pdoubles" class="solr.DoublePointField"/>
+  <fieldType name="pfloats" class="solr.FloatPointField"/>
+  <fieldType name="plongs" class="solr.LongPointField"/>
+  <fieldType name="strings" class="solr.StrField" />
+
+  <field name="_version_" type="plong" indexed="false" stored="false"/>
+  <field name="title" type="text_general" docValues="false" indexed="true" stored="true"/>
+</schema>

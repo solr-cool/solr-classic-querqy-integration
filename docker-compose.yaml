@@ -1,0 +1,13 @@
+version: '2.4'
+services:
+  solr_leader:
+    image: querqy-solr
+    ports:
+      - 8983:8983
+  solr_follower:
+    image: querqy-solr
+    ports:
+      - 8984:8984
+    environment:
+      - SOLR_PORT=8984
+      - SOLR_OPTS=-Dsolr.leader.url=http://solr_leader:8983/solr/querqy/replication
