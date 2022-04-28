@@ -26,8 +26,8 @@ and upon commit replicated to the follower instance.
 
 1. Add the [Querqy library](rootfs/opt/solr/contrib/querqy/lib/querqy-solr-5.2.lucene720.0-jar-with-dependencies.jar)
    suitable for your Solr distribution version
-1. Configure Querqy query parser in `solrconfig.xml`
-1. Configure Querqy rule replication in `solrconfig.xml`
+1. Configure [Querqy query parser in `solrconfig.xml`](blob/main/rootfs/opt/solr/server/solr/querqy/conf/solrconfig.xml#L76-L79)
+1. Configure [Querqy rule replication in `solrconfig.xml`](blob/main/rootfs/opt/solr/server/solr/querqy/conf/solrconfig.xml#L88)
 
 ## 🏃 Up and running
 
