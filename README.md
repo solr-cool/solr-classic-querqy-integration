@@ -21,6 +21,8 @@ and upon commit replicated to the follower instance.
     * The settings does not allow wildcard entries, separate files via comma.
     * In the example below, we create the `common_rules` rewriter. The resulting
       entry in the replication handlers `confFiles` setting is `querqy/rewriters/common_rules`
+    * _If you want to configure more than one rewriter in Querqy, you need a
+      corresponding entry in the replication handlers `confFiles` setting!_
 
 ## 🏗️ Solr modifications for Querqy
 
