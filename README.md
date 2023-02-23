@@ -1,4 +1,7 @@
-# ☀️ Querqy Solr replication integration example
+# ☀️ Querqy Solr 7 replication integration example
+
+> 7️⃣ This is the integration of Querqy into a classic __Solr7__ ensemble
+> For Solr8 switch to the `solr8` branch.
 
 This is an out of the box example of a _leader/follower (master/slave)
 [Solr](https://solr.apache.org/guide/7_3/) ensemble_
