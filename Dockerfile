@@ -1,3 +1,4 @@
-FROM solr:7.7.3-slim
+FROM solr:8.11.2-slim
 
-ADD --chown=solr:solr rootfs/ /
+ADD --chown=solr:solr rootfs/opt/solr/ /opt/solr/
+ADD --chown=solr:solr rootfs/var/solr/data/ /var/solr/data/

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config>
-  <luceneMatchVersion>7.7.3</luceneMatchVersion>
+  <luceneMatchVersion>8.11.2</luceneMatchVersion>
 
   <!-- Pull Querqy JARs -->
   <lib dir="${solr.install.dir:../../../..}/contrib/querqy/lib" regex=".*\.jar" />
@@ -28,20 +28,17 @@
   </updateHandler>
   <query>
     <maxBooleanClauses>${solr.max.booleanClauses:1024}</maxBooleanClauses>
-    <filterCache class="solr.FastLRUCache"
-                 size="512"
+    <filterCache size="512"
                  initialSize="512"
                  autowarmCount="0"/>
-    <queryResultCache class="solr.LRUCache"
-                      size="512"
+
+    <queryResultCache size="512"
                       initialSize="512"
                       autowarmCount="0"/>
-    <documentCache class="solr.LRUCache"
-                   size="512"
+    <documentCache size="512"
                    initialSize="512"
                    autowarmCount="0"/>
     <cache name="perSegFilter"
-           class="solr.search.LRUCache"
            size="10"
            initialSize="0"
            autowarmCount="10"
@@ -59,6 +56,8 @@
     </listener>
     <useColdSearcher>false</useColdSearcher>
   </query>
+    <circuitBreakers enabled="true">
+  </circuitBreakers>
   <requestDispatcher>
     <httpCaching never304="true" />
   </requestDispatcher>
@@ -89,6 +88,7 @@
     </lst>
     <lst name="slave">
       <str name="masterUrl">${solr.leader.url:-}</str>
+      <str name="enable">${solr.follower.enable:false}</str>
       <str name="pollInterval">00:00:05</str>
       <str name="compression">internal</str>
       <str name="httpConnTimeout">5000</str>
@@ -100,7 +100,7 @@
   <!-- END changes -->
   <!-- =================================================================== -->
 
-  <initParams path="/update/**,/query,/select,/tvrh,/elevate,/spell,/browse">
+  <initParams path="/update/**,/query,/select,/spell">
     <lst name="defaults">
       <str name="df">_text_</str>
     </lst>
@@ -116,23 +116,13 @@
   <updateProcessor class="solr.ParseDoubleFieldUpdateProcessorFactory" name="parse-double"/>
   <updateProcessor class="solr.ParseDateFieldUpdateProcessorFactory" name="parse-date">
     <arr name="format">
-      <str>yyyy-MM-dd'T'HH:mm:ss.SSSZ</str>
-      <str>yyyy-MM-dd'T'HH:mm:ss,SSSZ</str>
-      <str>yyyy-MM-dd'T'HH:mm:ss.SSS</str>
-      <str>yyyy-MM-dd'T'HH:mm:ss,SSS</str>
-      <str>yyyy-MM-dd'T'HH:mm:ssZ</str>
-      <str>yyyy-MM-dd'T'HH:mm:ss</str>
-      <str>yyyy-MM-dd'T'HH:mmZ</str>
-      <str>yyyy-MM-dd'T'HH:mm</str>
-      <str>yyyy-MM-dd HH:mm:ss.SSSZ</str>
-      <str>yyyy-MM-dd HH:mm:ss,SSSZ</str>
-      <str>yyyy-MM-dd HH:mm:ss.SSS</str>
-      <str>yyyy-MM-dd HH:mm:ss,SSS</str>
-      <str>yyyy-MM-dd HH:mm:ssZ</str>
-      <str>yyyy-MM-dd HH:mm:ss</str>
-      <str>yyyy-MM-dd HH:mmZ</str>
-      <str>yyyy-MM-dd HH:mm</str>
-      <str>yyyy-MM-dd</str>
+      <str>yyyy-MM-dd['T'[HH:mm[:ss[.SSS]][z</str>
+      <str>yyyy-MM-dd['T'[HH:mm[:ss[,SSS]][z</str>
+      <str>yyyy-MM-dd HH:mm[:ss[.SSS]][z</str>
+      <str>yyyy-MM-dd HH:mm[:ss[,SSS]][z</str>
+      <str>[EEE, ]dd MMM yyyy HH:mm[:ss] z</str>
+      <str>EEEE, dd-MMM-yy HH:mm:ss z</str>
+      <str>EEE MMM ppd HH:mm:ss [z ]yyyy</str>
     </arr>
   </updateProcessor>
   <updateProcessor class="solr.AddSchemaFieldsUpdateProcessorFactory" name="add-schema-fields">
@@ -172,8 +162,5 @@
   </updateRequestProcessorChain>
   <queryResponseWriter name="json" class="solr.JSONResponseWriter">
     <str name="content-type">text/plain; charset=UTF-8</str>
-  </queryResponseWriter>
-  <queryResponseWriter name="xslt" class="solr.XSLTResponseWriter">
-    <int name="xsltCacheLifetimeSeconds">5</int>
   </queryResponseWriter>
 </config>

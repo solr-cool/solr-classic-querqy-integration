@@ -1,7 +1,10 @@
-# ☀️ Querqy Solr replication integration example
+# ☀️ Querqy Solr 8 replication integration example
+
+> 8️⃣ This is the integration of Querqy into a classic __Solr8__ ensemble
+> For Solr7 switch to the `solr7` branch.
 
 This is an out of the box example of a _leader/follower (master/slave)
-[Solr](https://solr.apache.org/guide/7_3/) ensemble_
+[Solr](https://solr.apache.org/guide/8_11/) ensemble_
 with the [_Querqy 5 query parser_](https://docs.querqy.org/querqy/index.html)
 and rewriting engine enabled.
 
@@ -16,7 +19,7 @@ and upon commit replicated to the follower instance.
 * The storage schema in the data directory is `querqy/rewriters/<REWRITER_NAME>`
 * Querqy rule replication needs specific configuration of the Solr
   replication handler:
-    * The [`confFiles` setting](https://solr.apache.org/guide/7_3/index-replication.html#replicating-configuration-files)
+    * The [`confFiles` setting](https://solr.apache.org/guide/8_11/index-replication.html#replicating-configuration-files)
       in the replication handler needs to list all Querqy rewriter files.
     * The settings does not allow wildcard entries, separate files via comma.
     * In the example below, we create the `common_rules` rewriter. The resulting
@@ -26,10 +29,18 @@ and upon commit replicated to the follower instance.
 
 ## 🏗️ Solr modifications for Querqy
 
-1. Add the [Querqy library](rootfs/opt/solr/contrib/querqy/lib/querqy-solr-5.2.lucene720.0-jar-with-dependencies.jar)
+1. Add the [Querqy library](rootfs/opt/solr/contrib/querqy/lib/querqy-solr-5.5.lucene811.1-jar-with-dependencies.jar)
    suitable for your Solr distribution version
-1. Configure [Querqy query parser in `solrconfig.xml`](blob/main/rootfs/opt/solr/server/solr/querqy/conf/solrconfig.xml#L76-L79)
-1. Configure [Querqy rule replication in `solrconfig.xml`](blob/main/rootfs/opt/solr/server/solr/querqy/conf/solrconfig.xml#L88)
+1. Configure [Querqy query parser in `solrconfig.xml`](blob/main/rootfs/var/solr/data/querqy/conf/solrconfig.xml#L76-L79)
+1. Configure [Querqy rule replication in `solrconfig.xml`](blob/main/rootfs/var/solr/data/querqy/conf/solrconfig.xml#L87)
+
+#### Changes between Solr 8 and [Solr 7](https://github.com/solr-cool/solr-classic-querqy-integration/tree/solr7)
+
+* Place the core data in `/var/solr/data` instead of `/opt/solr/server/solr`
+* Update the Querqy library to a version matching Solr 8.11
+* Disable Solrs shard replication whitelist using `-Dsolr.disable.shardsWhitelist=true`
+* Enable master polling explicitly using `-Dsolr.follower.enable=true`
+  and picking up the switch in [solrconfig.xml](blob/main/rootfs/var/solr/data/querqy/conf/solrconfig.xml#L91)
 
 ## 🏃 Up and running
 
@@ -43,7 +54,7 @@ ensemble. The leader is reacheable at [localhost:8983](http://localhost:8983),
 the follower is reachable at [localhost:8984](http://localhost:8984)
 
 ```bash
-$ docker build -t querqy-solr .
+$ docker build -t querqy-solr8 .
 $ docker-compose up
 ```
 

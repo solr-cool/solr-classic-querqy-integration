@@ -1,13 +1,15 @@
 version: '2.4'
 services:
   solr_leader:
-    image: querqy-solr
+    image: querqy-solr8
     ports:
       - 8983:8983
+    environment:
+      - SOLR_OPTS=-Dsolr.disable.shardsWhitelist=true
   solr_follower:
-    image: querqy-solr
+    image: querqy-solr8
     ports:
       - 8984:8984
     environment:
       - SOLR_PORT=8984
-      - SOLR_OPTS=-Dsolr.leader.url=http://solr_leader:8983/solr/querqy/replication
+      - SOLR_OPTS=-Dsolr.disable.shardsWhitelist=true -Dsolr.follower.enable=true -Dsolr.leader.url=http://solr_leader:8983/solr/querqy/replication
